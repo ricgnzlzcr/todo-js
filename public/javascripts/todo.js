@@ -56,7 +56,46 @@ class TodoList {
 }
 
 class Model {
-  constructor() {}
+  #todos;
+
+  constructor() {
+    this.#todos = this.getServerTodos();
+  }
+
+  async getServerTodos() {
+    const response = await fetch('/api/todos');
+    const todos = await response.json();
+    return todos;
+  }
+
+  async addTodo(title, day, month, year, completed, description) {
+    const response = await fetch("api/todos", {
+      method: "POST",
+      body: JSON.stringify({
+          title: title,
+          day: day,
+          month: month,
+          year: year,
+          completed: completed,
+          description: description
+      }),
+      headers: {
+          "Content-type": "application/json; charset=UTF-8"
+      }
+    });
+
+    const todo = await response.json();
+    this.updateTodos();
+    return todo;
+  }
+
+  async updateTodos() {
+    this.#todos = await this.getServerTodos();
+    console.log(this.#todos);
+  }
+
+  
+
 }
 
 class View {
@@ -75,7 +114,8 @@ const app = new Controller(new Model(), new View());
 let todo = new Todo(1, "Finish project", "11", "11", "2021", false, "You need this for LS");
 todo.updateTodo({description: "You can do this!"});
 
-let todoList = new TodoList();
-todoList.addTodo(todo);
+let model = new Model();
+model.addTodo("Complete LS project", "01", "11", "2022", false, "Project for Core");
 
-debugger;
+
+// debugger;
