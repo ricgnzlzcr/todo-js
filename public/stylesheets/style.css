@@ -1,8 +1,38 @@
-body {
-  padding: 50px;
+html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
 }
 
 a {
   color: #00B7FF;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+#app-row {
+  height: 100%;
+}
+
+.row > * {
+  padding: 0;
+}
+
+nav {
+  background-color: #464f77;
+  height: 100%;
+}
+
+#v-pills-tab {
+  width: 100%;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #383f5f;
+  border-radius: 0;
 }
