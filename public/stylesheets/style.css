@@ -26,13 +26,35 @@ nav {
 
 #v-pills-tab {
   width: 100%;
+  padding: 2rem 0;
 }
 
 .nav-link {
   color: white;
 }
 
+
 .nav-pills .nav-link.active {
   background-color: #383f5f;
   border-radius: 0;
+}
+
+.app-content {
+  padding: 2rem;
+}
+
+.section-title {
+  margin-bottom: 2rem;
+}
+
+.add-todo-btn {
+  margin-bottom: 2rem;
+}
+
+li.todo-item span {
+  margin-left: 1rem;
+}
+
+.trashBtn {
+  float: right;
 }
