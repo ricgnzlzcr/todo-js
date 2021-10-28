@@ -60,10 +60,6 @@ class Model {
     return response.status;
   }
 
-  // async markTodoComplete(id) {
-  //   const data = JSON.stringify({completed : true});
-  //   this.updateTodo(id, data);
-  // }
 
   async resetTodos() {
     const response = await fetch('/api/reset');
@@ -128,13 +124,28 @@ class View {
       if (id) {
         const data = JSON.stringify({completed : true});
         updateHandler(id, data);
-        // this.#crossOutText(id);
+        
       } else {
         alert('Cannot mark as complete as item has not been created yet!');
       }
     });
 
+    $('ul#todoList').on('click', 'a.todo-area', e => {      
+      const a = e.currentTarget;
+      const id = a.parentNode.getAttribute('data-id');
+      const todoCompleted = a.firstElementChild.checked;
+
+      if (todoCompleted) {
+        updateHandler(id, JSON.stringify({completed: false}));
+      } else {
+        updateHandler(id, JSON.stringify({completed: true}));
+      }
+    });
+
+
     $('main').on('change', '.todo-checkbox', e => {
+      e.stopPropagation();
+
       const checkbox = e.currentTarget;
       const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
@@ -154,15 +165,13 @@ class View {
     });
   }
 
-  // #crossOutText(id) {
-  //   const span = document.querySelector(`li[data-id="${id}"] span`);
-  //   span.classList.add('completed');
-  // }
 
   #bindTodoTitleClicked() {
-    $(this.todoList).on('click', 'li', e => {
+    $(this.todoList).on('click', 'span', e => {
+      e.stopPropagation();
+ 
       this.#clearForm();
-      const li = e.currentTarget;
+      const li = e.currentTarget.parentNode.parentNode;
       this.lastTodoTitleClickedID = li.getAttribute('data-id');
       const title = li.getAttribute('data-title');
       const desc = li.getAttribute('data-description');
