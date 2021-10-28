@@ -41,17 +41,10 @@ class Model {
     return response.status;
   }
 
-  async updateTodo(id, title, day, month, year, completed, description) {
+  async updateTodo(id, JSONTodo) {
     const response = await fetch(`/api/todos/${id}`, {
       method: "PUT",
-      body: JSON.stringify({
-          title: title,
-          day: day,
-          month: month,
-          year: year,
-          completed: completed,
-          description: description
-      }),
+      body: JSONTodo,
       headers: {
           "Content-type": "application/json; charset=UTF-8"
       }
@@ -84,6 +77,10 @@ class View {
     this.todoList = document.querySelector('#todoList');
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
     
+    // Tracks id of the last todo clicked
+    this.lastTodoTitleClickedID = null;
+    this.#bindTodoTitleClicked();
+    this.#bindAddTodoBtnClicked();
 
   }
 
@@ -94,12 +91,18 @@ class View {
     this.todoList.insertAdjacentHTML('afterbegin', list);
   }
 
-  bindAddTodo(handler) {
+  bindTodoChange(addHandler, updateHandler) {
     this.form.addEventListener('submit', e => {
       e.preventDefault();
 
       const data = View.convertFormDataToJSON(new FormData(this.form));
-      handler(data);
+      // debugger;
+      if (!this.lastTodoTitleClickedID) {
+        addHandler(data);
+      } else {
+        updateHandler(this.lastTodoTitleClickedID, data);
+      }
+
       this.#clearForm()
     });
   }
@@ -113,6 +116,19 @@ class View {
     });
   }
 
+  #bindTodoTitleClicked() {
+    $(this.todoList).on('click', 'li', e => {
+      this.lastTodoTitleClickedID = e.currentTarget.getAttribute('data-id');
+    });
+  }
+
+  // Sets lastTodoTitleClickedID to null so bindTotoChange calls correct handler
+  #bindAddTodoBtnClicked() {
+    document.querySelector('.add-todo-btn').addEventListener('click', e => {
+      this.lastTodoTitleClickedID = null;
+    });
+  }
+
   #clearForm() {
     this.titleInput.value = '';
     this.descTextearea.value = '';
@@ -123,7 +139,15 @@ class View {
 
   static convertFormDataToJSON(formData) {
     const object = {};
-    formData.forEach((value, key) => object[key] = value);
+    formData.forEach((value, key) => {
+      if ( (key === 'day' && value === 'Day')     || 
+           (key === 'month' && value === 'Month') || 
+           (key === "year" && value === 'Year')
+          ) {
+            value = '';
+          }
+      object[key] = value;
+    });
     return JSON.stringify(object);
   }
 }
@@ -134,7 +158,7 @@ class Controller {
     this.view = view;
 
     this.model.bindTodoListChanged(this.onTodoListChanged);
-    this.view.bindAddTodo(this.handleAddTodo);
+    this.view.bindTodoChange(this.handleAddTodo, this.handleUpdateTodo);
     this.view.bindDeleteTodo(this.handleDeleteTodo);
 
     this.onTodoListChanged();
@@ -153,6 +177,10 @@ class Controller {
 
   handleAddTodo = todo => {
     this.model.addTodo(todo);
+  }
+
+  handleUpdateTodo = (id, todo) => {
+    this.model.updateTodo(id, todo);
   }
 
   handleDeleteTodo = id => {
