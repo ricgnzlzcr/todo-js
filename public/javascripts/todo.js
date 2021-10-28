@@ -136,7 +136,7 @@ class View {
 
     $('main').on('change', '.todo-checkbox', e => {
       const checkbox = e.currentTarget;
-      const id = checkbox.parentNode.getAttribute('data-id');
+      const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
         updateHandler(id, JSON.stringify({completed: true}));
       } else {
@@ -149,7 +149,7 @@ class View {
     $(this.todoList).on('click', '.trashBtn', e => {
       e.preventDefault();
 
-      const id = e.currentTarget.parentNode.getAttribute('data-id');
+      const id = e.currentTarget.parentNode.parentNode.getAttribute('data-id');
       handler(id);
     });
   }

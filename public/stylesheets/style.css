@@ -51,12 +51,29 @@ nav {
   margin-bottom: 2rem;
 }
 
+li.todo-item {
+  box-sizing: border-box;
+}
+
 li.todo-item span {
   margin-left: 1rem;
 }
 
+a.todo-area {
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+  width: 97%;
+  padding: 0.5rem 0;
+}
+
+a.todo-area:hover {
+  background: rgba(200,100,100, 0.5);
+}
+
 .trashBtn {
-  float: right;
+  display: inline-block;
+  width: 2%;
 }
 
 .todo-item .li_title {
