@@ -96,7 +96,7 @@ class View {
       e.preventDefault();
 
       const data = View.convertFormDataToJSON(new FormData(this.form));
-      // debugger;
+
       if (!this.lastTodoTitleClickedID) {
         addHandler(data);
       } else {
@@ -118,13 +118,28 @@ class View {
 
   #bindTodoTitleClicked() {
     $(this.todoList).on('click', 'li', e => {
-      this.lastTodoTitleClickedID = e.currentTarget.getAttribute('data-id');
+      this.#clearForm();
+      const li = e.currentTarget;
+      this.lastTodoTitleClickedID = li.getAttribute('data-id');
+      const title = li.getAttribute('data-title');
+      const desc = li.getAttribute('data-description');
+      const day = li.getAttribute('data-day');
+      const month = li.getAttribute('data-month');
+      const year = li.getAttribute('data-year');
+
+      this.titleInput.value = title ? title : '';
+      this.descTextearea.value = desc ? desc : '';
+
+      if (day) this.dayOption.querySelector(`option[value="${day}"]`).selected = true;
+      if (month) this.monthOption.querySelector(`option[value="${month}"]`).selected = true;
+      if (year) this.yearOption.querySelector(`option[value="${year}"]`).selected = true;
     });
   }
 
   // Sets lastTodoTitleClickedID to null so bindTotoChange calls correct handler
   #bindAddTodoBtnClicked() {
     document.querySelector('.add-todo-btn').addEventListener('click', e => {
+      this.#clearForm();
       this.lastTodoTitleClickedID = null;
     });
   }
