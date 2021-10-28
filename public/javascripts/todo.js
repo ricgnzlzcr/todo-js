@@ -1,4 +1,10 @@
-
+Handlebars.registerHelper('validDate', function(month, year) {
+  if (month && year) {
+    return ` - ${month}/${year.slice(2)}`;
+  } else {
+    return ' - No Due Date';
+  }
+});
 
 class Model {
 

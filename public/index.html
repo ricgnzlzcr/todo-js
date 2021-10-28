@@ -158,7 +158,9 @@
     {{#each todos}}
     <li class="list-group-item todo-item" data-id="{{id}}" data-title="{{title}}" data-description="{{description}}" data-completed="{{completed}}" data-day="{{day}}" data-month="{{month}}" data-year="{{year}}">
       <input type="checkbox" class="todo-checkbox" {{#if completed}}checked{{/if}}>
-      <span class="li_title {{#if completed}}completed{{/if}}" data-bs-toggle="modal" data-bs-target="#addTodoModal">{{title}}</span>
+      <span class="li_title {{#if completed}}completed{{/if}}" data-bs-toggle="modal" data-bs-target="#addTodoModal">
+        {{title}}{{validDate month year}}
+      </span>
       <a href="#" class="trashBtn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -168,6 +170,13 @@
     </li>
     {{/each}}
   </script>
+
+  <!-- <script id=dateHelper type="text/x-handlebars">
+    Handlebars.registerHelper('validDate', function(month, year) {
+      return (month && year);
+    });
+  </script> -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
