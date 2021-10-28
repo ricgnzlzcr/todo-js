@@ -156,7 +156,7 @@
 
   <script id="todoLITemplate" type="text/x-handlebars">
     {{#each todos}}
-    <li class="list-group-item todo-item" data-id="{{id}}">
+    <li class="list-group-item todo-item" data-id="{{id}}" data-title="{{title}}" data-description="{{description}}" data-completed="{{completed}}" data-day="{{day}}" data-month="{{month}}" data-year="{{year}}">
       <input type="checkbox" class="todo-checkbox"><span class="li_title" data-bs-toggle="modal" data-bs-target="#addTodoModal">{{title}}</span>
       <a href="#" class="trashBtn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
