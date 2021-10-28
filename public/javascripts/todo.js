@@ -148,8 +148,8 @@ class View {
   bindDeleteTodo(handler) {
     $(this.todoList).on('click', '.trashBtn', e => {
       e.preventDefault();
-
-      const id = e.currentTarget.parentNode.parentNode.getAttribute('data-id');
+      const id = e.currentTarget.parentNode.getAttribute('data-id');
+      //debugger;
       handler(id);
     });
   }
