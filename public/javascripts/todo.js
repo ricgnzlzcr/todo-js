@@ -94,6 +94,15 @@ class View {
     });
   }
 
+  bindDeleteTodo(handler) {
+    $(this.todoList).on('click', '.trashBtn', e => {
+      e.preventDefault();
+
+      const id = e.currentTarget.parentNode.getAttribute('data-id');
+      handler(id);
+    });
+  }
+
   static convertFormDataToJSON(formData) {
     const object = {};
     formData.forEach((value, key) => object[key] = value);
@@ -108,6 +117,7 @@ class Controller {
 
     this.model.bindTodoListChanged(this.onTodoListChanged);
     this.view.bindAddTodo(this.handleAddTodo);
+    this.view.bindDeleteTodo(this.handleDeleteTodo);
 
     this.onTodoListChanged();
   }
@@ -125,6 +135,10 @@ class Controller {
 
   handleAddTodo = todo => {
     this.model.addTodo(todo);
+  }
+
+  handleDeleteTodo = id => {
+    this.model.deleteTodo(id);
   }
 }
 
