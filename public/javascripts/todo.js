@@ -72,6 +72,7 @@ class Model {
 class View {
   constructor() {
     this.saveNewTodoBtn = document.querySelector('#saveNewTodoBtn');
+    this.modal = document.querySelector('#addTodoModal');
 
     // Form elements
     this.form = document.querySelector('#modalForm');
@@ -124,7 +125,8 @@ class View {
       if (id) {
         const data = JSON.stringify({completed : true});
         updateHandler(id, data);
-        
+        // debugger;
+        $("[data-bs-dismiss=modal]").trigger({ type: "click" });
       } else {
         alert('Cannot mark as complete as item has not been created yet!');
       }
