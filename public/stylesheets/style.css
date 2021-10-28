@@ -63,6 +63,10 @@ li.todo-item span {
   cursor: pointer;
 }
 
+.completed {
+  text-decoration: line-through;
+}
+
 /* Form CSS */
 form *{
   background: none;

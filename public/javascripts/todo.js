@@ -54,6 +54,11 @@ class Model {
     return response.status;
   }
 
+  // async markTodoComplete(id) {
+  //   const data = JSON.stringify({completed : true});
+  //   this.updateTodo(id, data);
+  // }
+
   async resetTodos() {
     const response = await fetch('/api/reset');
     this.onTodoListChanged();
@@ -73,6 +78,7 @@ class View {
     this.dayOption = this.form.querySelector('#due_day');
     this.monthOption = this.form.querySelector('#due_month');
     this.yearOption = this.form.querySelector('#due_year');
+    this.markCompleteBtn = this.form.querySelector('#markCompleteBtn');
 
     this.todoList = document.querySelector('#todoList');
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
@@ -105,6 +111,28 @@ class View {
 
       this.#clearForm()
     });
+
+    this.markCompleteBtn.addEventListener('click', e => {
+      e.preventDefault();
+      const id = this.lastTodoTitleClickedID;
+      if (id) {
+        const data = JSON.stringify({completed : true});
+        updateHandler(id, data);
+        // this.#crossOutText(id);
+      } else {
+        alert('Cannot mark as complete as item has not been created yet!');
+      }
+    });
+
+    $('main').on('change', '.todo-checkbox', e => {
+      const checkbox = e.currentTarget;
+      const id = checkbox.parentNode.getAttribute('data-id');
+      if (checkbox.checked) {
+        updateHandler(id, JSON.stringify({completed: true}));
+      } else {
+        updateHandler(id, JSON.stringify({completed: false}));
+      }
+    });
   }
 
   bindDeleteTodo(handler) {
@@ -115,6 +143,11 @@ class View {
       handler(id);
     });
   }
+
+  // #crossOutText(id) {
+  //   const span = document.querySelector(`li[data-id="${id}"] span`);
+  //   span.classList.add('completed');
+  // }
 
   #bindTodoTitleClicked() {
     $(this.todoList).on('click', 'li', e => {
