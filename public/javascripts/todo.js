@@ -72,10 +72,19 @@ class Model {
 class View {
   constructor() {
     this.saveNewTodoBtn = document.querySelector('#saveNewTodoBtn');
+
+    // Form elements
     this.form = document.querySelector('#modalForm');
+    this.titleInput = this.form.querySelector('input');
+    this.descTextearea = this.form.querySelector('textarea');
+    this.dayOption = this.form.querySelector('#due_day');
+    this.monthOption = this.form.querySelector('#due_month');
+    this.yearOption = this.form.querySelector('#due_year');
+
     this.todoList = document.querySelector('#todoList');
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
     
+
   }
 
   displayTodos(todos) {
@@ -91,6 +100,7 @@ class View {
 
       const data = View.convertFormDataToJSON(new FormData(this.form));
       handler(data);
+      this.#clearForm()
     });
   }
 
@@ -101,6 +111,14 @@ class View {
       const id = e.currentTarget.parentNode.getAttribute('data-id');
       handler(id);
     });
+  }
+
+  #clearForm() {
+    this.titleInput.value = '';
+    this.descTextearea.value = '';
+    this.dayOption.firstElementChild.selected = true;
+    this.monthOption.firstElementChild.selected = true;
+    this.yearOption.firstElementChild.selected = true;
   }
 
   static convertFormDataToJSON(formData) {
