@@ -98,7 +98,11 @@ class View {
 
   displayTodos(todos) {
     console.log(todos);
-    const list = this.todoItemsTemplate({todos: todos});
+    const completedTodos = todos.filter(todo => todo.completed);
+    const sortedList = todos.filter(todo => !todo.completed);
+    sortedList.push(...completedTodos);
+ 
+    const list = this.todoItemsTemplate({todos: sortedList});
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
   }
