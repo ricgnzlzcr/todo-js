@@ -6,6 +6,10 @@ class Model {
     
   }
 
+  bindTodoListChanged(callback) {
+    this.onTodoListChanged = callback;
+  }
+
   async getTodo(id) {
     const response = await fetch(`/api/todos/${id}`);
     const todo = await response.json();
@@ -80,24 +84,38 @@ class Model {
 }
 
 class View {
-  constructor() {}
+  constructor() {
+    this.todoList = document.querySelector('#todoList');
+    this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
+  }
+
+  displayTodos(todos) {
+    const list = this.todoItemsTemplate({todos: todos});
+    this.todoList.insertAdjacentHTML('afterbegin', list);
+  }
 }
 
 class Controller {
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
+    this.model.bindTodoListChanged(this.onTodoListChanged);
+
+    // Display initial todos
+    (async () => {
+      let todos = await this.model.getAllTodos();
+      this.onTodoListChanged(todos);
+    })();
+  }
+
+  onTodoListChanged = todos => {
+    this.view.displayTodos(todos);
   }
 }
 
-const app = new Controller(new Model(), new View());
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new Controller(new Model(), new View());
+});
 
 
-let model = new Model();
-let todo2 = (async () => {
-  let todo = await model.getTodo(9)
-  console.log(todo);
-})();
-
-
-// debugger;
