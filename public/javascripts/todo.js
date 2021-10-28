@@ -22,29 +22,22 @@ class Model {
     return todos;
   }
 
-  async addTodo(title, day, month, year, completed, description) {
+  async addTodo(JSONTodo) {
     const response = await fetch("api/todos", {
       method: "POST",
-      body: JSON.stringify({
-          title: title,
-          day: day,
-          month: month,
-          year: year,
-          completed: completed,
-          description: description
-      }),
+      body: JSONTodo,
       headers: {
           "Content-type": "application/json; charset=UTF-8"
       }
     });
 
-    // if (response.status === 201) this.updateTodoList();
+    if (response.status === 201) this.onTodoListChanged();
     return response.status;
   }
 
   async deleteTodo(id) {
     const response = await fetch(`/api/todos/${id}`, { method: 'DELETE' });
-    // if (response.status === 204) this.updateTodoList();
+    if (response.status === 204) this.onTodoListChanged();
     return response.status;
   }
 
@@ -64,34 +57,47 @@ class Model {
       }
     });
 
-    // if (response.status === 200) this.updateTodoList();
+    if (response.status === 200) this.onTodoListChanged();
     return response.status;
   }
 
   async resetTodos() {
     const response = await fetch('/api/reset');
+    this.onTodoListChanged();
     return response.status;
   }
-
-  // async updateTodoList() {
-  //   this.#todos = await this.getServerTodos();
-  //   console.log(this.#todos);
-  // }
-
-
-  
 
 }
 
 class View {
   constructor() {
+    this.saveNewTodoBtn = document.querySelector('#saveNewTodoBtn');
+    this.form = document.querySelector('#modalForm');
     this.todoList = document.querySelector('#todoList');
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
+    
   }
 
   displayTodos(todos) {
+    console.log(todos);
     const list = this.todoItemsTemplate({todos: todos});
+    this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
+  }
+
+  bindAddTodo(handler) {
+    this.form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const data = View.convertFormDataToJSON(new FormData(this.form));
+      handler(data);
+    });
+  }
+
+  static convertFormDataToJSON(formData) {
+    const object = {};
+    formData.forEach((value, key) => object[key] = value);
+    return JSON.stringify(object);
   }
 }
 
@@ -101,16 +107,24 @@ class Controller {
     this.view = view;
 
     this.model.bindTodoListChanged(this.onTodoListChanged);
+    this.view.bindAddTodo(this.handleAddTodo);
 
-    // Display initial todos
-    (async () => {
-      let todos = await this.model.getAllTodos();
-      this.onTodoListChanged(todos);
-    })();
+    this.onTodoListChanged();
   }
 
-  onTodoListChanged = todos => {
-    this.view.displayTodos(todos);
+  getTodos(handler) {
+    (async () => {
+      let todos = await this.model.getAllTodos();
+      handler.call(this.view, todos);
+    }).call(this);
+  }
+
+  onTodoListChanged = () => {
+    this.getTodos(this.view.displayTodos);
+  }
+
+  handleAddTodo = todo => {
+    this.model.addTodo(todo);
   }
 }
 
