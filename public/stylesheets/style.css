@@ -59,6 +59,10 @@ li.todo-item span {
   float: right;
 }
 
+.todo-item .li_title {
+  cursor: pointer;
+}
+
 /* Form CSS */
 form *{
   background: none;
