@@ -100,6 +100,9 @@ class View {
 
   displayTodos(todos) {
     console.log(todos);
+    const data = View.processDataForTemplate(todos);
+    debugger;
+
     const completedTodos = todos.filter(todo => todo.completed);
     const sortedList = todos.filter(todo => !todo.completed);
     sortedList.push(...completedTodos);
@@ -179,6 +182,71 @@ class View {
       handler(id);
     });
   }
+
+  static processDataForTemplate(todos) {
+    // Create list of titles
+    const sorted = [...todos];
+    sorted.sort(View.compareTodos);
+    const titles = [];
+    sorted.forEach(todo => {
+      const title = View.generateTitle(todo.month, todo.year);
+      if (!titles.includes(title)) titles.push(title);
+    });
+    
+    // Create subarrays
+    const allTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0}));
+    allTodos.unshift({todos: [], title: "All Todos", count: 0});
+    
+    let completedTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0}));
+    completedTodos.unshift({todos: [], title: "Completed", count: 0});
+  
+    // Add todos to each object
+    const allArr = allTodos.find(todo => todo.title === 'All Todos').todos;
+    const completedArr = completedTodos.find(todo => todo.title === 'Completed').todos;
+    sorted.forEach(todo => {
+      const title = View.generateTitle(todo.month, todo.year);
+      if (todo.completed) {
+        allTodos.find(todo => todo.title === title).todos.push(todo);
+        completedTodos.find(todo => todo.title === title).todos.push(todo);
+        completedArr.push(todo);
+        allArr.push(todo);
+      } else {
+        allTodos.find(todo => todo.title === title).todos.push(todo);
+        allArr.push(todo);
+      }
+    });
+  
+    // Update count for each object
+    allTodos.forEach(obj => obj.count = obj.todos.length);
+    completedTodos.forEach(obj => obj.count = obj.todos.length);
+  
+    // Filter out objects with no todos from completedTodos
+    completedTodos = completedTodos.filter(obj => obj.count > 0);
+  
+    return [allTodos, completedTodos];
+  }
+  
+    static generateTitle(month, year) {
+      if (!month || !year) return 'No Due Date';
+      return `${month}/${year.slice(2)}`;
+    }
+    
+    static compareTodos(a, b) {
+      const aMonth = Number(a.month);
+      const aYear = Number(a.year);
+      const bMonth = Number(b.month);
+      const bYear = Number(b.year);
+    
+      if (aYear < bYear) {
+        return -1;
+      } else if (bYear < aYear) {
+        return 1;
+      } else if (aYear === bYear) {
+        return aYear - bYear;
+      } else {
+        return 0;
+      }
+    }
 
   #dismissModal() {
     $("[data-bs-dismiss=modal]").trigger({ type: "click" });
