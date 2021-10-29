@@ -116,8 +116,14 @@ class View {
     console.log(data);
 
     const navBtns = this.navButtonsTemplate({sections: data});
+    this.navContainer.innerHTML = '';
     this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
     this.#addHoverToNavBtn();
+
+    const subData = data.find(obj => obj.title === this.lastClickedNavTitle);
+    const list = this.todoItemsTemplate({todos: subData.todos});
+    this.todoList.innerHTML = '';
+    this.todoList.insertAdjacentHTML('afterbegin', list);
 
     // const completedTodos = todos.filter(todo => todo.completed);
     // const sortedList = todos.filter(todo => !todo.completed);
