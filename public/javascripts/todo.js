@@ -81,6 +81,7 @@ class View {
     this.modal = document.querySelector('#addTodoModal');
     this.todoList = document.querySelector('#todoList');
     this.navContainer = document.querySelector('#navBtnContainer');
+    this.sectionTitle = document.querySelector('#sectionTitle');
 
     // Form elements
     this.form = document.querySelector('#modalForm');
@@ -91,9 +92,7 @@ class View {
     this.yearOption = this.form.querySelector('#due_year');
     this.markCompleteBtn = this.form.querySelector('#markCompleteBtn');
 
-    // Badge elements
-    // this.navAllBadge = document.querySelector('#nav-all-count');
-    // this.navCompletedBadge = document.querySelector('#nav-completed-count');
+    // Badge element
     this.mainBadge = document.querySelector('#main-badge-count');
 
     // Handlebars Tempaltes
@@ -151,6 +150,7 @@ class View {
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
     this.mainBadge.innerHTML = (String(subData.count));
+    this.sectionTitle.innerHTML = subData.title;
   }
 
   renderNav() {

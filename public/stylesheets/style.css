@@ -58,6 +58,10 @@ span.nav-todo-count {
   display: inline-block;
 }
 
+span#sectionTitle {
+  margin-right: 1rem;
+}
+
 
 .nav-pills .nav-link.active {
   background-color: #383f5f;
