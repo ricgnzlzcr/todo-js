@@ -107,6 +107,7 @@ class View {
 
     // Tracks last clicked nav button
     this.lastClickedNavTitle = 'All Todos';
+    this.#bindNavTitleClicked();
 
   }
 
@@ -216,11 +217,13 @@ class View {
     });
     
     // Create subarrays
-    const allTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0}));
-    allTodos.unshift({todos: [], title: "All Todos", count: 0});
-    
-    let completedTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0}));
-    completedTodos.unshift({todos: [], title: "Completed", count: 0});
+    let id = 0;
+    const allTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0, id: id += 1}));
+    allTodos.unshift({todos: [], title: "All Todos", count: 0, id: 0});
+    const completedId = id + 1;
+    id += 1;
+    let completedTodos = titles.map(dateTitle => ({todos: [], title: dateTitle, count: 0, id: id += 1}));
+    completedTodos.unshift({todos: [], title: "Completed", count: 0, id: completedId});
   
     // Add todos to each object
     const allArr = allTodos.find(todo => todo.title === 'All Todos').todos;
@@ -320,6 +323,13 @@ class View {
       if (day) this.dayOption.querySelector(`option[value="${day}"]`).selected = true;
       if (month) this.monthOption.querySelector(`option[value="${month}"]`).selected = true;
       if (year) this.yearOption.querySelector(`option[value="${year}"]`).selected = true;
+    });
+  }
+
+  #bindNavTitleClicked() {
+    $('#navBtnContainer').on('click', 'button', e => {
+      const title = e.currentTarget.firstElementChild.innerHTML;
+      //this.lastClickedNavTitle = 
     });
   }
 
