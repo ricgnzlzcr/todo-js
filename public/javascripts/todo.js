@@ -103,15 +103,15 @@ class View {
     const data = View.processDataForTemplate(todos);
     console.log(data);
 
-    const completedTodos = todos.filter(todo => todo.completed);
-    const sortedList = todos.filter(todo => !todo.completed);
-    sortedList.push(...completedTodos);
+    // const completedTodos = todos.filter(todo => todo.completed);
+    // const sortedList = todos.filter(todo => !todo.completed);
+    // sortedList.push(...completedTodos);
  
-    const list = this.todoItemsTemplate({todos: sortedList});
-    this.todoList.innerHTML = '';
-    this.todoList.insertAdjacentHTML('afterbegin', list);
+    // const list = this.todoItemsTemplate({todos: sortedList});
+    // this.todoList.innerHTML = '';
+    // this.todoList.insertAdjacentHTML('afterbegin', list);
 
-    this.#updateBadgeCounts(todos);
+    // this.#updateBadgeCounts(todos);
   }
 
   bindTodoChange(addHandler, updateHandler) {
@@ -232,7 +232,8 @@ class View {
     // Filter out objects with no todos from completedTodos
     completedTodos = completedTodos.filter(obj => obj.count > 0);
   
-    return [allTodos, completedTodos];
+    allTodos.push(...completedTodos)
+    return allTodos;
   }
   
     static generateTitle(month, year) {
