@@ -92,9 +92,9 @@ class View {
     this.markCompleteBtn = this.form.querySelector('#markCompleteBtn');
 
     // Badge elements
-    this.navAllBadge = document.querySelector('#nav-all-count');
-    this.navCompletedBadge = document.querySelector('#nav-completed-count');
-    this.mainAllBadge = document.querySelector('#main-all-count');
+    // this.navAllBadge = document.querySelector('#nav-all-count');
+    // this.navCompletedBadge = document.querySelector('#nav-completed-count');
+    this.mainBadge = document.querySelector('#main-badge-count');
 
     // Handlebars Tempaltes
     this.navButtonsTemplate = Handlebars.compile(document.querySelector('#nav-button-template').innerHTML);
@@ -142,7 +142,12 @@ class View {
   }
 
   renderMain() {
-    const subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    let subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    if (!subData) {
+      this.lastClickedNavId = 0;
+      subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    }
+    //debugger;
     const list = this.todoItemsTemplate({todos: subData.todos});
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
@@ -190,22 +195,24 @@ class View {
       }
     });
 
-    $('ul#todoList').on('click', 'a.todo-area', e => {      
+    $('ul#todoList').on('click', 'a.todo-area', e => {    
+      // e.stopPropagation();  
+      // debugger;
       const a = e.currentTarget;
       const id = a.parentNode.getAttribute('data-id');
       const todoCompleted = a.firstElementChild.checked;
 
       if (todoCompleted) {
-        updateHandler(id, JSON.stringify({completed: false}));
-      } else {
         updateHandler(id, JSON.stringify({completed: true}));
+      } else {
+        updateHandler(id, JSON.stringify({completed: false}));
       }
     });
 
 
     $('main').on('change', '.todo-checkbox', e => {
       e.stopPropagation();
-
+      
       const checkbox = e.currentTarget;
       const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
@@ -313,14 +320,14 @@ class View {
     // UNFINISHED for other selected nav buttons
   }
 
-  #updateBadgeCounts(todos) {
-    const totalCount = todos.length;
-    const completedCount = todos.filter(todo => todo.completed).length;
+  // #updateBadgeCounts(todos) {
+  //   const totalCount = todos.length;
+  //   const completedCount = todos.filter(todo => todo.completed).length;
 
-    this.navAllBadge.innerHTML = String(totalCount);
-    this.navCompletedBadge.innerHTML = String(completedCount);
-    this.mainAllBadge.innerHTML = String(totalCount);
-  }
+  //   this.navAllBadge.innerHTML = String(totalCount);
+  //   this.navCompletedBadge.innerHTML = String(completedCount);
+  //   this.mainAllBadge.innerHTML = String(totalCount);
+  // }
 
   #bindTodoTitleClicked() {
     $(this.todoList).on('click', 'span', e => {
