@@ -110,7 +110,6 @@ class View {
     this.lastClickedNavId = 0;
     this.#bindNavTitleClicked();
 
-
   }
 
   renderView(todos) {
@@ -151,6 +150,7 @@ class View {
     const list = this.todoItemsTemplate({todos: subData.todos});
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
+    this.mainBadge.innerHTML = (String(subData.count));
   }
 
   renderNav() {
@@ -320,13 +320,8 @@ class View {
     // UNFINISHED for other selected nav buttons
   }
 
-  // #updateBadgeCounts(todos) {
-  //   const totalCount = todos.length;
-  //   const completedCount = todos.filter(todo => todo.completed).length;
-
-  //   this.navAllBadge.innerHTML = String(totalCount);
-  //   this.navCompletedBadge.innerHTML = String(completedCount);
-  //   this.mainAllBadge.innerHTML = String(totalCount);
+  // #updateBadgeCount(count) {
+  //   this.mainBadge.innerHTML = String(count);
   // }
 
   #bindTodoTitleClicked() {
