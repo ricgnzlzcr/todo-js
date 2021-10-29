@@ -101,7 +101,7 @@ class View {
   displayTodos(todos) {
     console.log(todos);
     const data = View.processDataForTemplate(todos);
-    debugger;
+    console.log(data);
 
     const completedTodos = todos.filter(todo => todo.completed);
     const sortedList = todos.filter(todo => !todo.completed);
@@ -214,6 +214,15 @@ class View {
         allTodos.find(todo => todo.title === title).todos.push(todo);
         allArr.push(todo);
       }
+    });
+
+    // Sort by uncompleted/completed for allTodos
+    allTodos.forEach(obj => {
+      const todoArr = obj.todos;
+      const completedArr = todoArr.filter(todo => todo.completed);
+      let unfinishedArr = todoArr.filter(todo => !todo.completed);
+      unfinishedArr.push(...completedArr);
+      obj.todos = unfinishedArr;
     });
   
     // Update count for each object
