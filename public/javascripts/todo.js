@@ -111,9 +111,15 @@ class View {
       const data = View.convertFormDataToJSON(new FormData(this.form));
 
       if (!this.lastTodoTitleClickedID) {
-        addHandler(data);
+        if (this.titleInput.value.length < 3) {
+          alert("You must enter a title at least 3 characters long");
+        } else {
+          addHandler(data);
+          this.#dismissModal();
+        }
       } else {
         updateHandler(this.lastTodoTitleClickedID, data);
+        this.#dismissModal();
       }
 
       this.#clearForm()
@@ -125,8 +131,8 @@ class View {
       if (id) {
         const data = JSON.stringify({completed : true});
         updateHandler(id, data);
-        // debugger;
-        $("[data-bs-dismiss=modal]").trigger({ type: "click" });
+        
+        this.#dismissModal()
       } else {
         alert('Cannot mark as complete as item has not been created yet!');
       }
@@ -162,11 +168,13 @@ class View {
     $(this.todoList).on('click', '.trashBtn', e => {
       e.preventDefault();
       const id = e.currentTarget.parentNode.getAttribute('data-id');
-      //debugger;
       handler(id);
     });
   }
 
+  #dismissModal() {
+    $("[data-bs-dismiss=modal]").trigger({ type: "click" });
+  }
 
   #bindTodoTitleClicked() {
     $(this.todoList).on('click', 'span', e => {
