@@ -242,7 +242,7 @@ class View {
       } else if (bYear < aYear) {
         return 1;
       } else if (aYear === bYear) {
-        return aYear - bYear;
+        return aMonth - bMonth;
       } else {
         return 0;
       }
