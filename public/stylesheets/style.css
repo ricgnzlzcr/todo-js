@@ -35,7 +35,7 @@ button.nav-link {
   height: 3rem;
 }
 
-button.nav-link h5 {
+button.nav-link h5, button.nav-link h4 {
   display: inline-block;
   width: 80%;
   margin-bottom: 0;

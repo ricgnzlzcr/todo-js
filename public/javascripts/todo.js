@@ -73,6 +73,7 @@ class View {
   constructor() {
     this.saveNewTodoBtn = document.querySelector('#saveNewTodoBtn');
     this.modal = document.querySelector('#addTodoModal');
+    this.todoList = document.querySelector('#todoList');
 
     // Form elements
     this.form = document.querySelector('#modalForm');
@@ -88,7 +89,8 @@ class View {
     this.navCompletedBadge = document.querySelector('#nav-completed-count');
     this.mainAllBadge = document.querySelector('#main-all-count');
 
-    this.todoList = document.querySelector('#todoList');
+    // Handlebars Tempaltes
+    this.navButtonsTemplate = Handlebars.compile(document.querySelector('#nav-button-template').innerHTML);
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
     
     // Tracks id of the last todo clicked
