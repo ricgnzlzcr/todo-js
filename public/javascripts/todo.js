@@ -6,7 +6,7 @@ Handlebars.registerHelper('validDate', function(month, year) {
   }
 });
 
-Handlebars.registerHelper('isMainPill', function(title) {
+Handlebars.registerHelper('getHeading', function(title) {
   if (title === 'All Todos' || title === 'Completed') {
     return 'h4';
   } else {
@@ -105,6 +105,9 @@ class View {
     this.#bindTodoTitleClicked();
     this.#bindAddTodoBtnClicked();
 
+    // Tracks last clicked nav button
+    this.lastClickedNavTitle = 'All Todos';
+
   }
 
   displayTodos(todos) {
@@ -113,8 +116,8 @@ class View {
     console.log(data);
 
     const navBtns = this.navButtonsTemplate({sections: data});
-    // debugger;
     this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
+    this.#addHoverToNavBtn();
 
     // const completedTodos = todos.filter(todo => todo.completed);
     // const sortedList = todos.filter(todo => !todo.completed);
@@ -273,6 +276,14 @@ class View {
 
   #dismissModal() {
     $("[data-bs-dismiss=modal]").trigger({ type: "click" });
+  }
+
+  #addHoverToNavBtn() {
+    const navElems = [...this.navContainer.children];
+    if (this.lastClickedNavTitle === 'All Todos') {
+      navElems[0].classList.add('active');
+    }
+    // UNFINISHED for other selected nav buttons
   }
 
   #updateBadgeCounts(todos) {
