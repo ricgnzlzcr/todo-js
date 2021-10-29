@@ -29,8 +29,20 @@ nav {
   padding: 2rem 0;
 }
 
-.nav-link {
+button.nav-link {
   color: white;
+  box-sizing: border-box;
+  height: 3rem;
+}
+
+button.nav-link h5 {
+  display: inline-block;
+  width: 90%;
+  margin-bottom: 0;
+}
+
+span.nav-todo-count {
+  display: inline-block;
 }
 
 
