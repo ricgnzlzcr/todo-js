@@ -178,7 +178,7 @@
   <span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button> -->
   <script id="nav-button-template" type="text/x-handlebars">
     {{#each sections}}
-    <button class="nav-link text-start nav-btn-section" data-bs-toggle="pill" data-bs-target="#v-pills-all" id="v-pills-all-tab" role="tab" aria-controls="v-pills-all" type="button" aria-selected="false">
+    <button class="nav-link text-start nav-btn-section" data-id="{{id}}" data-bs-toggle="pill" data-bs-target="#v-pills-all" id="v-pills-all-tab" role="tab" aria-controls="v-pills-all" type="button" aria-selected="false">
       <{{getHeading title}} class="inline-headline">{{title}}</{{getHeading title}}>
       <span class="badge bg-primary rounded-pill nav-todo-count">{{count}}</span>
     </button>

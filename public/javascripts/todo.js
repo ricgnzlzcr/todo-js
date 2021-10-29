@@ -106,25 +106,29 @@ class View {
     this.#bindAddTodoBtnClicked();
 
     // Tracks last clicked nav button
-    this.lastClickedNavTitle = 'All Todos';
+    this.processedData = null;
+    this.lastClickedNavId = 0;
     this.#bindNavTitleClicked();
+
 
   }
 
   displayTodos(todos) {
     console.log(todos);
-    const data = View.processDataForTemplate(todos);
-    console.log(data);
+    this.processedData = View.processDataForTemplate(todos);
+    console.log(this.processedData);
 
-    const navBtns = this.navButtonsTemplate({sections: data});
-    this.navContainer.innerHTML = '';
-    this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
-    this.#addHoverToNavBtn();
+    // const navBtns = this.navButtonsTemplate({sections: this.processedData});
+    // this.navContainer.innerHTML = '';
+    // this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
+    // this.#addHoverToNavBtn();
+    this.renderNav();
 
-    const subData = data.find(obj => obj.title === this.lastClickedNavTitle);
-    const list = this.todoItemsTemplate({todos: subData.todos});
-    this.todoList.innerHTML = '';
-    this.todoList.insertAdjacentHTML('afterbegin', list);
+    // const subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    // const list = this.todoItemsTemplate({todos: subData.todos});
+    // this.todoList.innerHTML = '';
+    // this.todoList.insertAdjacentHTML('afterbegin', list);
+    this.renderMain();
 
     // const completedTodos = todos.filter(todo => todo.completed);
     // const sortedList = todos.filter(todo => !todo.completed);
@@ -135,6 +139,20 @@ class View {
     // this.todoList.insertAdjacentHTML('afterbegin', list);
 
     // this.#updateBadgeCounts(todos);
+  }
+
+  renderMain() {
+    const subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    const list = this.todoItemsTemplate({todos: subData.todos});
+    this.todoList.innerHTML = '';
+    this.todoList.insertAdjacentHTML('afterbegin', list);
+  }
+
+  renderNav() {
+    const navBtns = this.navButtonsTemplate({sections: this.processedData});
+    this.navContainer.innerHTML = '';
+    this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
+    this.#addHoverToNavBtn();
   }
 
   bindTodoChange(addHandler, updateHandler) {
@@ -289,7 +307,7 @@ class View {
 
   #addHoverToNavBtn() {
     const navElems = [...this.navContainer.children];
-    if (this.lastClickedNavTitle === 'All Todos') {
+    if (this.lastClickedNavId === 0) {
       navElems[0].classList.add('active');
     }
     // UNFINISHED for other selected nav buttons
@@ -326,10 +344,13 @@ class View {
     });
   }
 
+  // WORKING HEEERRRRREEEE
   #bindNavTitleClicked() {
     $('#navBtnContainer').on('click', 'button', e => {
-      const title = e.currentTarget.firstElementChild.innerHTML;
-      //this.lastClickedNavTitle = 
+      const id = e.currentTarget.getAttribute('data-id');
+      this.lastClickedNavId = Number(id);
+      // this.displayTodos()
+      this.renderMain();
     });
   }
 
