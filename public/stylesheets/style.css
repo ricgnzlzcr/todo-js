@@ -24,9 +24,14 @@ nav {
   height: 100%;
 }
 
-#v-pills-tab {
+div#navBtnContainer {
   width: 100%;
-  padding: 2rem 0;
+  padding-top: 2rem;
+}
+
+button.nav-btn-section {
+  width: 100%;
+  /* padding: 2rem 0; */
 }
 
 button.nav-link {
@@ -35,10 +40,18 @@ button.nav-link {
   height: 3rem;
 }
 
-button.nav-link h5, button.nav-link h4 {
+button.nav-link h4 {
   display: inline-block;
   width: 80%;
   margin-bottom: 0;
+  padding-left: 10%;
+}
+
+button.nav-link h6 {
+  display: inline-block;
+  width: 80%;
+  margin-bottom: 0;
+  padding-left: 15%;
 }
 
 span.nav-todo-count {

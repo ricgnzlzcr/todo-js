@@ -6,6 +6,14 @@ Handlebars.registerHelper('validDate', function(month, year) {
   }
 });
 
+Handlebars.registerHelper('isMainPill', function(title) {
+  if (title === 'All Todos' || title === 'Completed') {
+    return 'h4';
+  } else {
+    return 'h6';
+  }
+});
+
 class Model {
 
   constructor() { }
@@ -72,6 +80,7 @@ class View {
     this.saveNewTodoBtn = document.querySelector('#saveNewTodoBtn');
     this.modal = document.querySelector('#addTodoModal');
     this.todoList = document.querySelector('#todoList');
+    this.navContainer = document.querySelector('#navBtnContainer');
 
     // Form elements
     this.form = document.querySelector('#modalForm');
@@ -102,6 +111,10 @@ class View {
     console.log(todos);
     const data = View.processDataForTemplate(todos);
     console.log(data);
+
+    const navBtns = this.navButtonsTemplate({sections: data});
+    // debugger;
+    this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
 
     // const completedTodos = todos.filter(todo => todo.completed);
     // const sortedList = todos.filter(todo => !todo.completed);

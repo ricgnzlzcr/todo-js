@@ -15,13 +15,16 @@
     <div class="row" id="app-row">
       <nav class="col-md-2">
         <div class="d-flex align-items-start">
-          <div class="nav flex-column nav-pills nav-fill" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <button class="nav-link text-start active" id="v-pills-all-tab" data-bs-toggle="pill" data-bs-target="#v-pills-all" type="button" role="tab" aria-controls="v-pills-all" aria-selected="true"><h5 class="inline-headline">All Todos</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button>
+          <div class="nav flex-column nav-pills" id="navBtnContainer" role="tablist" aria-orientation="vertical">
+            <!-- <button class="nav-link text-start active" id="v-pills-all-tab" data-bs-toggle="pill" data-bs-target="#v-pills-all" type="button" role="tab" aria-controls="v-pills-all" aria-selected="true"><h5 class="inline-headline">All Todos</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button> -->
 
             <!-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">- Profile <span class="badge bg-primary rounded-pill todo-count">0</span> -</button> -->
-            <button class="nav-link text-start" id="v-pills-completed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-completed" type="button" role="tab" aria-controls="v-pills-completed" aria-selected="false"><h5 class="inline-headline">Completed</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-completed-count">0</span></button>
+            <!-- <button class="nav-link text-start" id="v-pills-completed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-completed" type="button" role="tab" aria-controls="v-pills-completed" aria-selected="false"><h5 class="inline-headline">Completed</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-completed-count">0</span></button> -->
             <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">- Settings <span class="badge bg-primary rounded-pill todo-count">0</span> -</button> -->
-          </div>
+
+
+
+          </div> <!-- end #navBtnContainer -->
         </div>
       </nav>
     
@@ -170,11 +173,13 @@
     </li>
     {{/each}}
   </script>
-
+<!-- <button class="nav-link text-start active" id="v-pills-all-tab" data-bs-toggle="pill" data-bs-target="#v-pills-all" type="button" role="tab" aria-controls="v-pills-all" aria-selected="true">
+  <h5 class="inline-headline">All Todos</h5>
+  <span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button> -->
   <script id="nav-button-template" type="text/x-handlebars">
-    {{#each dateSection}}
-    <button class="nav-link text-start" type="button" aria-selected="false">
-      <h4 class="inline-headline">{{date}}</h4>
+    {{#each sections}}
+    <button class="nav-link text-start nav-btn-section" data-bs-toggle="pill" data-bs-target="#v-pills-all" id="v-pills-all-tab" role="tab" aria-controls="v-pills-all" type="button" aria-selected="false">
+      <{{isMainPill title}} class="inline-headline">{{title}}</{{isMainPill title}}>
       <span class="badge bg-primary rounded-pill nav-todo-count">{{count}}</span>
     </button>
     {{/each}}
