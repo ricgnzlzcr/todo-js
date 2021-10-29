@@ -8,9 +8,7 @@ Handlebars.registerHelper('validDate', function(month, year) {
 
 class Model {
 
-  constructor() {
-    
-  }
+  constructor() { }
 
   bindTodoListChanged(callback) {
     this.onTodoListChanged = callback;
@@ -136,11 +134,12 @@ class View {
 
     this.markCompleteBtn.addEventListener('click', e => {
       e.preventDefault();
+
       const id = this.lastTodoTitleClickedID;
+
       if (id) {
         const data = JSON.stringify({completed : true});
         updateHandler(id, data);
-        
         this.#dismissModal()
       } else {
         alert('Cannot mark as complete as item has not been created yet!');
