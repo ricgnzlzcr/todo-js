@@ -83,6 +83,11 @@ class View {
     this.yearOption = this.form.querySelector('#due_year');
     this.markCompleteBtn = this.form.querySelector('#markCompleteBtn');
 
+    // Badge elements
+    this.navAllBadge = document.querySelector('#nav-all-count');
+    this.navCompletedBadge = document.querySelector('#nav-completed-count');
+    this.mainAllBadge = document.querySelector('#main-all-count');
+
     this.todoList = document.querySelector('#todoList');
     this.todoItemsTemplate = Handlebars.compile(document.querySelector('#todoLITemplate').innerHTML);
     
@@ -102,6 +107,8 @@ class View {
     const list = this.todoItemsTemplate({todos: sortedList});
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
+
+    this.#updateBadgeCounts(todos);
   }
 
   bindTodoChange(addHandler, updateHandler) {
@@ -174,6 +181,15 @@ class View {
 
   #dismissModal() {
     $("[data-bs-dismiss=modal]").trigger({ type: "click" });
+  }
+
+  #updateBadgeCounts(todos) {
+    const totalCount = todos.length;
+    const completedCount = todos.filter(todo => todo.completed).length;
+
+    this.navAllBadge.innerHTML = String(totalCount);
+    this.navCompletedBadge.innerHTML = String(completedCount);
+    this.mainAllBadge.innerHTML = String(totalCount);
   }
 
   #bindTodoTitleClicked() {
