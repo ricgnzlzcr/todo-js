@@ -113,7 +113,7 @@ class View {
 
   }
 
-  displayTodos(todos) {
+  renderView(todos) {
     console.log(todos);
     this.processedData = View.processDataForTemplate(todos);
     console.log(this.processedData);
@@ -273,7 +273,7 @@ class View {
     completedTodos.forEach(obj => obj.count = obj.todos.length);
   
     // Filter out objects with no todos from completedTodos
-    completedTodos = completedTodos.filter(obj => obj.count > 0);
+    completedTodos = completedTodos.filter(obj => obj.count > 0 || obj.title === 'Completed');
   
     allTodos.push(...completedTodos)
     return allTodos;
@@ -349,7 +349,6 @@ class View {
     $('#navBtnContainer').on('click', 'button', e => {
       const id = e.currentTarget.getAttribute('data-id');
       this.lastClickedNavId = Number(id);
-      // this.displayTodos()
       this.renderMain();
     });
   }
@@ -405,7 +404,7 @@ class Controller {
   }
 
   onTodoListChanged = () => {
-    this.getTodos(this.view.displayTodos);
+    this.getTodos(this.view.renderView);
   }
 
   handleAddTodo = todo => {
