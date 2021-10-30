@@ -16,13 +16,6 @@
       <nav class="col-md-2">
         <div class="d-flex align-items-start">
           <div class="nav flex-column nav-pills" id="navBtnContainer" role="tablist" aria-orientation="vertical">
-            <!-- <button class="nav-link text-start active" id="v-pills-all-tab" data-bs-toggle="pill" data-bs-target="#v-pills-all" type="button" role="tab" aria-controls="v-pills-all" aria-selected="true"><h5 class="inline-headline">All Todos</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button> -->
-
-            <!-- <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">- Profile <span class="badge bg-primary rounded-pill todo-count">0</span> -</button> -->
-            <!-- <button class="nav-link text-start" id="v-pills-completed-tab" data-bs-toggle="pill" data-bs-target="#v-pills-completed" type="button" role="tab" aria-controls="v-pills-completed" aria-selected="false"><h5 class="inline-headline">Completed</h5><span class="badge bg-primary rounded-pill nav-todo-count" id="nav-completed-count">0</span></button> -->
-            <!-- <button class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">- Settings <span class="badge bg-primary rounded-pill todo-count">0</span> -</button> -->
-
-
 
           </div> <!-- end #navBtnContainer -->
         </div>
@@ -30,7 +23,6 @@
     
       <main class="col-md-10">
         <div class="tab-content" id="v-pills-tabContent">
-
           <div class="tab-pane fade show active" id="v-pills-all" role="tabpanel" aria-labelledby="v-pills-all-tab">
             <section class="app-content">
               <h3 class="section-title"><span id="sectionTitle">All Todos </span><span class="badge bg-primary rounded-pill todo-count" id="main-badge-count">0</span></h3>
@@ -40,10 +32,6 @@
               </ul>
             </section>
           </div> <!-- end All Todos -->
-
-          <!-- <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...Profile</div>
-          <div class="tab-pane fade" id="v-pills-completed" role="tabpanel" aria-labelledby="v-pills-completed-tab">...Completed</div>
-          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...Settings</div> -->
         </div>
       </main>
     </div> <!-- Row -->
@@ -173,9 +161,7 @@
     </li>
     {{/each}}
   </script>
-<!-- <button class="nav-link text-start active" id="v-pills-all-tab" data-bs-toggle="pill" data-bs-target="#v-pills-all" type="button" role="tab" aria-controls="v-pills-all" aria-selected="true">
-  <h5 class="inline-headline">All Todos</h5>
-  <span class="badge bg-primary rounded-pill nav-todo-count" id="nav-all-count">0</span></button> -->
+
   <script id="nav-button-template" type="text/x-handlebars">
     {{#each sections}}
     <button class="nav-link text-start nav-btn-section" data-id="{{id}}" data-bs-toggle="pill" data-bs-target="#v-pills-all" id="v-pills-all-tab" role="tab" aria-controls="v-pills-all" type="button" aria-selected="false">

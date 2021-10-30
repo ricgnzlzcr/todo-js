@@ -224,12 +224,13 @@ class View {
       } else {
         updateHandler(id, JSON.stringify({completed: true}));
       }
+      // return false;
     });
 
 
     $('ul#todoList').on('change', '.todo-checkbox', e => {
       e.stopPropagation();
-      alert('checkbox');
+      // alert('checkbox');
       const checkbox = e.currentTarget;
       const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
