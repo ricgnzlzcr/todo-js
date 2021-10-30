@@ -126,6 +126,14 @@ class View {
     // const list = this.todoItemsTemplate({todos: subData.todos});
     // this.todoList.innerHTML = '';
     // this.todoList.insertAdjacentHTML('afterbegin', list);
+
+    // let subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    // if (!subData) {
+    //   this.lastClickedNavId = 0;
+    //   subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
+    // }
+
+    // this.renderMainTitle(subData);
     this.renderMain();
 
     // const completedTodos = todos.filter(todo => todo.completed);
@@ -153,6 +161,10 @@ class View {
     this.sectionTitle.innerHTML = subData.title;
   }
 
+  // renderMainTitle(subData) {
+  //   this.sectionTitle.innerHTML = subData.title;
+  // }
+
   renderNav() {
     const navBtns = this.navButtonsTemplate({sections: this.processedData});
     this.navContainer.innerHTML = '';
@@ -170,6 +182,8 @@ class View {
         if (this.titleInput.value.length < 3) {
           alert("You must enter a title at least 3 characters long");
         } else {
+          this.lastTodoTitleClickedID = 0;
+          this.lastClickedNavId = 0;
           addHandler(data);
           this.#dismissModal();
         }
@@ -198,21 +212,24 @@ class View {
     $('ul#todoList').on('click', 'a.todo-area', e => {    
       // e.stopPropagation();  
       // debugger;
+      if (e.target instanceof HTMLInputElement) return;
+      // e.stopImmediatePropagation();
+      // alert('li clicked' + `. currentTarget: ${e.target}`);
       const a = e.currentTarget;
       const id = a.parentNode.getAttribute('data-id');
       const todoCompleted = a.firstElementChild.checked;
 
       if (todoCompleted) {
-        updateHandler(id, JSON.stringify({completed: true}));
-      } else {
         updateHandler(id, JSON.stringify({completed: false}));
+      } else {
+        updateHandler(id, JSON.stringify({completed: true}));
       }
     });
 
 
-    $('main').on('change', '.todo-checkbox', e => {
+    $('ul#todoList').on('change', '.todo-checkbox', e => {
       e.stopPropagation();
-      
+      alert('checkbox');
       const checkbox = e.currentTarget;
       const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
