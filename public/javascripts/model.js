@@ -1,7 +1,6 @@
 export { Model };
 
 class Model {
-
   constructor() { }
 
   bindTodoListChanged(callback) {
@@ -58,5 +57,4 @@ class Model {
     this.onTodoListChanged();
     return response.status;
   }
-
 }
