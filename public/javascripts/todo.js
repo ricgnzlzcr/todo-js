@@ -111,11 +111,11 @@ class View {
   renderView(todos) {
     this.processedData = View.processDataForTemplate(todos);
 
-    this.renderNav();
-    this.renderMain();
+    this.#renderNav();
+    this.#renderMain();
   }
 
-  renderMain() {
+  #renderMain() {
     let subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
     if (!subData) {
       this.lastClickedNavId = 0;
@@ -129,7 +129,7 @@ class View {
     this.sectionTitle.innerHTML = subData.title;
   }
 
-  renderNav() {
+  #renderNav() {
     const navBtns = this.navButtonsTemplate({sections: this.processedData});
     this.navContainer.innerHTML = '';
     this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
@@ -137,6 +137,7 @@ class View {
   }
 
   bindTodoChange(addHandler, updateHandler) {
+    // Modal form submission event listener
     this.form.addEventListener('submit', e => {
       e.preventDefault();
 
@@ -159,6 +160,7 @@ class View {
       this.#clearForm()
     });
 
+    // Modal 'Make Complete' button event listener
     this.markCompleteBtn.addEventListener('click', e => {
       e.preventDefault();
 
@@ -173,6 +175,7 @@ class View {
       }
     });
 
+    // todo.completed toggled on click event listener
     $('ul#todoList').on('click', 'a.todo-area', e => {    
       if (e.target instanceof HTMLInputElement) return;
 
@@ -187,7 +190,7 @@ class View {
       }
     });
 
-
+    // todo.completed toggled on click of checkbox
     $('ul#todoList').on('change', '.todo-checkbox', e => {
       e.stopPropagation();
       
@@ -207,6 +210,63 @@ class View {
       const id = e.currentTarget.parentNode.getAttribute('data-id');
       handler(id);
     });
+  }
+
+  #bindTodoTitleClicked() {
+    $(this.todoList).on('click', 'span', e => {
+      e.stopPropagation();
+ 
+      this.#clearForm();
+      const li = e.currentTarget.parentNode.parentNode;
+      this.lastTodoTitleClickedID = li.getAttribute('data-id');
+      const title = li.getAttribute('data-title');
+      const desc = li.getAttribute('data-description');
+      const day = li.getAttribute('data-day');
+      const month = li.getAttribute('data-month');
+      const year = li.getAttribute('data-year');
+
+      this.titleInput.value = title ? title : '';
+      this.descTextearea.value = desc ? desc : '';
+
+      if (day) this.dayOption.querySelector(`option[value="${day}"]`).selected = true;
+      if (month) this.monthOption.querySelector(`option[value="${month}"]`).selected = true;
+      if (year) this.yearOption.querySelector(`option[value="${year}"]`).selected = true;
+    });
+  }
+
+  #bindNavTitleClicked() {
+    $('#navBtnContainer').on('click', 'button', e => {
+      const id = e.currentTarget.getAttribute('data-id');
+      this.lastClickedNavId = Number(id);
+      this.#renderMain();
+    });
+  }
+
+  // Sets lastTodoTitleClickedID to null so bindTotoChange calls correct handler
+  #bindAddTodoBtnClicked() {
+    document.querySelector('.add-todo-btn').addEventListener('click', e => {
+      this.#clearForm();
+      this.lastTodoTitleClickedID = null;
+    });
+  }
+
+  #dismissModal() {
+    $("[data-bs-dismiss=modal]").trigger({ type: "click" });
+  }
+
+  #addHoverToNavBtn() {
+    const navElems = [...this.navContainer.children];
+    if (this.lastClickedNavId === 0) {
+      navElems[0].classList.add('active');
+    }
+  }
+
+  #clearForm() {
+    this.titleInput.value = '';
+    this.descTextearea.value = '';
+    this.dayOption.firstElementChild.selected = true;
+    this.monthOption.firstElementChild.selected = true;
+    this.yearOption.firstElementChild.selected = true;
   }
 
   static processDataForTemplate(todos) {
@@ -264,83 +324,26 @@ class View {
     return allTodos;
   }
   
-    static generateTitle(month, year) {
-      if (!month || !year) return 'No Due Date';
-      return `${month}/${year.slice(2)}`;
-    }
+  static generateTitle(month, year) {
+    if (!month || !year) return 'No Due Date';
+    return `${month}/${year.slice(2)}`;
+  }
     
-    static compareTodos(a, b) {
-      const aMonth = Number(a.month);
-      const aYear = Number(a.year);
-      const bMonth = Number(b.month);
-      const bYear = Number(b.year);
+  static compareTodos(a, b) {
+    const aMonth = Number(a.month);
+    const aYear = Number(a.year);
+    const bMonth = Number(b.month);
+    const bYear = Number(b.year);
     
-      if (aYear < bYear) {
-        return -1;
-      } else if (bYear < aYear) {
-        return 1;
-      } else if (aYear === bYear) {
-        return aMonth - bMonth;
-      } else {
-        return 0;
-      }
+    if (aYear < bYear) {
+      return -1;
+    } else if (bYear < aYear) {
+      return 1;
+    } else if (aYear === bYear) {
+      return aMonth - bMonth;
+    } else {
+      return 0;
     }
-
-  #dismissModal() {
-    $("[data-bs-dismiss=modal]").trigger({ type: "click" });
-  }
-
-  #addHoverToNavBtn() {
-    const navElems = [...this.navContainer.children];
-    if (this.lastClickedNavId === 0) {
-      navElems[0].classList.add('active');
-    }
-  }
-
-  #bindTodoTitleClicked() {
-    $(this.todoList).on('click', 'span', e => {
-      e.stopPropagation();
- 
-      this.#clearForm();
-      const li = e.currentTarget.parentNode.parentNode;
-      this.lastTodoTitleClickedID = li.getAttribute('data-id');
-      const title = li.getAttribute('data-title');
-      const desc = li.getAttribute('data-description');
-      const day = li.getAttribute('data-day');
-      const month = li.getAttribute('data-month');
-      const year = li.getAttribute('data-year');
-
-      this.titleInput.value = title ? title : '';
-      this.descTextearea.value = desc ? desc : '';
-
-      if (day) this.dayOption.querySelector(`option[value="${day}"]`).selected = true;
-      if (month) this.monthOption.querySelector(`option[value="${month}"]`).selected = true;
-      if (year) this.yearOption.querySelector(`option[value="${year}"]`).selected = true;
-    });
-  }
-
-  #bindNavTitleClicked() {
-    $('#navBtnContainer').on('click', 'button', e => {
-      const id = e.currentTarget.getAttribute('data-id');
-      this.lastClickedNavId = Number(id);
-      this.renderMain();
-    });
-  }
-
-  // Sets lastTodoTitleClickedID to null so bindTotoChange calls correct handler
-  #bindAddTodoBtnClicked() {
-    document.querySelector('.add-todo-btn').addEventListener('click', e => {
-      this.#clearForm();
-      this.lastTodoTitleClickedID = null;
-    });
-  }
-
-  #clearForm() {
-    this.titleInput.value = '';
-    this.descTextearea.value = '';
-    this.dayOption.firstElementChild.selected = true;
-    this.monthOption.firstElementChild.selected = true;
-    this.yearOption.firstElementChild.selected = true;
   }
 
   static convertFormDataToJSON(formData) {
