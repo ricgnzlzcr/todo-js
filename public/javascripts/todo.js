@@ -82,6 +82,7 @@ class View {
     this.todoList = document.querySelector('#todoList');
     this.navContainer = document.querySelector('#navBtnContainer');
     this.sectionTitle = document.querySelector('#sectionTitle');
+    this.mainBadge = document.querySelector('#main-badge-count');
 
     // Form elements
     this.form = document.querySelector('#modalForm');
@@ -91,9 +92,6 @@ class View {
     this.monthOption = this.form.querySelector('#due_month');
     this.yearOption = this.form.querySelector('#due_year');
     this.markCompleteBtn = this.form.querySelector('#markCompleteBtn');
-
-    // Badge element
-    this.mainBadge = document.querySelector('#main-badge-count');
 
     // Handlebars Tempaltes
     this.navButtonsTemplate = Handlebars.compile(document.querySelector('#nav-button-template').innerHTML);
@@ -108,43 +106,13 @@ class View {
     this.processedData = null;
     this.lastClickedNavId = 0;
     this.#bindNavTitleClicked();
-
   }
 
   renderView(todos) {
-    console.log(todos);
     this.processedData = View.processDataForTemplate(todos);
-    console.log(this.processedData);
 
-    // const navBtns = this.navButtonsTemplate({sections: this.processedData});
-    // this.navContainer.innerHTML = '';
-    // this.navContainer.insertAdjacentHTML('afterbegin', navBtns);
-    // this.#addHoverToNavBtn();
     this.renderNav();
-
-    // const subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
-    // const list = this.todoItemsTemplate({todos: subData.todos});
-    // this.todoList.innerHTML = '';
-    // this.todoList.insertAdjacentHTML('afterbegin', list);
-
-    // let subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
-    // if (!subData) {
-    //   this.lastClickedNavId = 0;
-    //   subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
-    // }
-
-    // this.renderMainTitle(subData);
     this.renderMain();
-
-    // const completedTodos = todos.filter(todo => todo.completed);
-    // const sortedList = todos.filter(todo => !todo.completed);
-    // sortedList.push(...completedTodos);
- 
-    // const list = this.todoItemsTemplate({todos: sortedList});
-    // this.todoList.innerHTML = '';
-    // this.todoList.insertAdjacentHTML('afterbegin', list);
-
-    // this.#updateBadgeCounts(todos);
   }
 
   renderMain() {
@@ -153,17 +121,13 @@ class View {
       this.lastClickedNavId = 0;
       subData = this.processedData.find(obj => obj.id === this.lastClickedNavId);
     }
-    //debugger;
+  
     const list = this.todoItemsTemplate({todos: subData.todos});
     this.todoList.innerHTML = '';
     this.todoList.insertAdjacentHTML('afterbegin', list);
     this.mainBadge.innerHTML = (String(subData.count));
     this.sectionTitle.innerHTML = subData.title;
   }
-
-  // renderMainTitle(subData) {
-  //   this.sectionTitle.innerHTML = subData.title;
-  // }
 
   renderNav() {
     const navBtns = this.navButtonsTemplate({sections: this.processedData});
@@ -210,11 +174,8 @@ class View {
     });
 
     $('ul#todoList').on('click', 'a.todo-area', e => {    
-      // e.stopPropagation();  
-      // debugger;
       if (e.target instanceof HTMLInputElement) return;
-      // e.stopImmediatePropagation();
-      // alert('li clicked' + `. currentTarget: ${e.target}`);
+
       const a = e.currentTarget;
       const id = a.parentNode.getAttribute('data-id');
       const todoCompleted = a.firstElementChild.checked;
@@ -224,13 +185,12 @@ class View {
       } else {
         updateHandler(id, JSON.stringify({completed: true}));
       }
-      // return false;
     });
 
 
     $('ul#todoList').on('change', '.todo-checkbox', e => {
       e.stopPropagation();
-      // alert('checkbox');
+      
       const checkbox = e.currentTarget;
       const id = checkbox.parentNode.parentNode.getAttribute('data-id');
       if (checkbox.checked) {
@@ -335,12 +295,7 @@ class View {
     if (this.lastClickedNavId === 0) {
       navElems[0].classList.add('active');
     }
-    // UNFINISHED for other selected nav buttons
   }
-
-  // #updateBadgeCount(count) {
-  //   this.mainBadge.innerHTML = String(count);
-  // }
 
   #bindTodoTitleClicked() {
     $(this.todoList).on('click', 'span', e => {
@@ -364,7 +319,6 @@ class View {
     });
   }
 
-  // WORKING HEEERRRRREEEE
   #bindNavTitleClicked() {
     $('#navBtnContainer').on('click', 'button', e => {
       const id = e.currentTarget.getAttribute('data-id');
